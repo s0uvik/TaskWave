@@ -21,20 +21,19 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={`${inter.className} dotted-background`}>
         <ClerkProvider
           appearance={{
             baseTheme: dark,
+            variables: {
+              colorBackground: "#0a111f",
+              colorInputBackground: "#2D3748",
+            },
           }}
         >
           <ThemeProvider attribute="class" defaultTheme="dark">
             <Header />
             <main className=" min-h-screen">{children}</main>
-            <footer className=" bg-gray-900 py-8">
-              <div className=" container mx-auto text-center text-gray-200">
-                <p>Made by Souvik ❤️</p>
-              </div>
-            </footer>
           </ThemeProvider>
         </ClerkProvider>
       </body>
