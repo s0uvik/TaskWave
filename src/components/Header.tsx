@@ -6,8 +6,10 @@ import { PenBox } from "lucide-react";
 import { Button } from "./ui/button";
 import UserMenu from "./UserMenu";
 import Logo from "./Logo";
+import { checkUser } from "@/lib/checkUser";
 
-const Header = () => {
+const Header = async () => {
+  await checkUser();
   return (
     <header className=" px-4">
       <nav className=" container mx-auto flex justify-between items-center py-4">
