@@ -16,7 +16,7 @@ const UserMenu = () => {
         <UserButton.Link
           label="My Organization"
           labelIcon={<ChartNoAxesGantt />}
-          href="/organization"
+          href="/onboarding"
         ></UserButton.Link>
         <UserButton.Action label="manageAccount" />
       </UserButton.MenuItems>

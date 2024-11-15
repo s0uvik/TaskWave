@@ -18,7 +18,7 @@ const Header = async () => {
         </Link>
 
         <div className=" flex gap-4 items-center justify-between">
-          <Link href="/project/create">
+          <Link href="/projects/create">
             <Button className="bg-blue-500 p-2 text-xs sm:text-sm sm:px-4 sm:py-2">
               <PenBox size={16} className="sm:w-4 sm:h-4" />
               Create Project
