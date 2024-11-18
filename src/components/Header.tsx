@@ -7,6 +7,7 @@ import { Button } from "./ui/button";
 import UserMenu from "./UserMenu";
 import Logo from "./Logo";
 import { checkUser } from "@/lib/checkUser";
+import UserLoader from "./UserLoader";
 
 const Header = async () => {
   await checkUser();
@@ -39,6 +40,7 @@ const Header = async () => {
           </SignedIn>
         </div>
       </nav>
+      <UserLoader />
     </header>
   );
 };
