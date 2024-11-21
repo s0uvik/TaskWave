@@ -1,6 +1,7 @@
 import { getOrganization } from "@/actions/organization";
 import OrgSwitcher from "@/components/OrgSwitcher";
 import React from "react";
+import ProjectList from "./_components/ProjectList";
 
 const page = async ({ params }: { params: Promise<{ orgId: string }> }) => {
   const { orgId } = await params;
@@ -19,8 +20,9 @@ const page = async ({ params }: { params: Promise<{ orgId: string }> }) => {
 
         <OrgSwitcher />
       </section>
-
-      <section></section>
+      <section>
+        <ProjectList orgId={organization.id} />
+      </section>
       <section></section>
     </div>
   );

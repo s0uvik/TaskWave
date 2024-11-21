@@ -151,8 +151,8 @@ export default function CreateProjectPage() {
             )}
           />
           {error && <p className="text-red-500">Failed to create project</p>}
-          <Button type="submit" className=" w-full">
-            Submit
+          <Button disabled={loading} type="submit" className=" w-full">
+            {loading ? "Creating Project..." : "Create Project"}
           </Button>
         </form>
       </Form>

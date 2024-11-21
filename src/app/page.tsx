@@ -88,7 +88,6 @@ export default function Home() {
           </Accordion>
         </div>
       </section>
-
       {/* CTA Section */}
       <section className="py-20 text-center px-5">
         <div className="container mx-auto">

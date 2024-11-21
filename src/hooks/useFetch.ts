@@ -9,7 +9,7 @@ function useFetch<TData, TArgs extends unknown[]>({
   cb,
 }: UseFetchOptions<TData, TArgs>) {
   const [data, setData] = useState<TData | undefined>(undefined);
-  const [loading, setLoading] = useState<boolean | null>(null);
+  const [loading, setLoading] = useState<boolean | undefined>(undefined);
   const [error, setError] = useState<Error | null>(null);
 
   const fn = async (...args: TArgs) => {
