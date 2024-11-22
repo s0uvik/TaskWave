@@ -1,3 +1,4 @@
+import { IssueStatus } from "@prisma/client";
 import { BarChart, Calendar, Layout } from "lucide-react";
 
 export const faqs = [
@@ -94,5 +95,24 @@ export const companies = [
     name: "uber",
     path: "/companies/uber.svg",
     id: 8,
+  },
+];
+
+export const status: { name: string; key: IssueStatus }[] = [
+  {
+    name: "Todo",
+    key: "TODO",
+  },
+  {
+    name: "In Progress",
+    key: "IN_PROGRESS",
+  },
+  {
+    name: "In Review",
+    key: "IN_REVIEW",
+  },
+  {
+    name: "Done",
+    key: "DONE",
   },
 ];

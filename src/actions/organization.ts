@@ -35,3 +35,38 @@ export const getOrganization = async (slug: string) => {
 
   return organization;
 };
+
+export async function getOrganizationUsers(orgId: string) {
+  const { userId } = await auth();
+  if (!userId) {
+    throw new Error("Unauthorized");
+  }
+
+  const user = await prisma.user.findUnique({
+    where: { clerkUserId: userId },
+  });
+
+  if (!user) {
+    throw new Error("User not found");
+  }
+
+  const organizationMemberships = await (
+    await clerkClient()
+  ).organizations.getOrganizationMembershipList({
+    organizationId: orgId,
+  });
+
+  const userIds = organizationMemberships.data
+    .map((membership) => membership?.publicUserData?.userId)
+    .filter((userId): userId is string => userId !== undefined); // Filter out undefined values
+
+  const users = await prisma.user.findMany({
+    where: {
+      clerkUserId: {
+        in: userIds,
+      },
+    },
+  });
+
+  return users;
+}
