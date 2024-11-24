@@ -26,17 +26,30 @@ import { status as statuses } from "@/constant";
 import { deleteIssue, updateIssue } from "@/actions/issues";
 import UserAvatar from "@/components/UserAvatar";
 import useFetch from "@/hooks/useFetch";
+import { Issue, IssuePriority, IssueStatus, User } from "@prisma/client";
 
 const priorityOptions = ["LOW", "MEDIUM", "HIGH", "URGENT"];
+
+// Define the type for the issue with relations
+type IssueWithRelations = Issue & {
+  assignee?: User | null; // Assignee can be null
+  reporter?: User; // Reporter is required
+};
+
+// Props for the IssueDetailsDialog component
+type Props = {
+  isOpen: boolean;
+  onClose: () => void;
+  issue: IssueWithRelations;
+  borderCol?: string;
+};
 
 export default function IssueDetailsDialog({
   isOpen,
   onClose,
   issue,
-  onDelete = () => {},
-  onUpdate = () => {},
   borderCol = "",
-}) {
+}: Props) {
   const [status, setStatus] = useState(issue.status);
   const [priority, setPriority] = useState(issue.priority);
 
@@ -57,37 +70,36 @@ export default function IssueDetailsDialog({
     loading: updateLoading,
     error: updateError,
     fn: updateIssueFn,
-    data: updated,
   } = useFetch({ cb: updateIssue });
 
   const handleDelete = async () => {
     if (window.confirm("Are you sure you want to delete this issue?")) {
       deleteIssueFn(issue.id);
+      router.refresh();
     }
   };
 
-  const handleStatusChange = async (newStatus) => {
+  const handleStatusChange = async (newStatus: IssueStatus) => {
     setStatus(newStatus);
     updateIssueFn(issue.id, { status: newStatus, priority });
+    router.refresh();
   };
 
-  const handlePriorityChange = async (newPriority) => {
+  const handlePriorityChange = async (newPriority: IssuePriority) => {
     setPriority(newPriority);
     updateIssueFn(issue.id, { status, priority: newPriority });
+    router.refresh();
   };
 
   useEffect(() => {
     if (deleted) {
       onClose();
-      onDelete();
     }
-    if (updated) {
-      onUpdate(updated);
-    }
-  }, [deleted, updated, deleteLoading, updateLoading]);
+  }, [deleted, onClose]);
 
   const canChange =
-    user?.id === issue.reporter.clerkUserId || membership?.role === "org:admin";
+    user?.id === issue.reporter?.clerkUserId ||
+    membership?.role === "org:admin";
 
   const handleGoToProject = () => {
     router.push(`/projects/${issue.projectId}?sprint=${issue.sprintId}`);

@@ -1,8 +1,13 @@
 "use client";
 
-import { $Enums, IssueStatus } from "@prisma/client";
+import { $Enums, Issue, IssueStatus } from "@prisma/client";
 import React, { useEffect, useState } from "react";
-import { DragDropContext, Draggable, Droppable } from "@hello-pangea/dnd";
+import {
+  DragDropContext,
+  Draggable,
+  Droppable,
+  DropResult,
+} from "@hello-pangea/dnd";
 import { status } from "@/constant";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
@@ -32,13 +37,12 @@ type Props = {
   orgId: string;
 };
 
-function reorder(list, startIndex, endIndex) {
+const reorder = <T,>(list: T[], startIndex: number, endIndex: number): T[] => {
   const result = Array.from(list);
   const [removed] = result.splice(startIndex, 1);
   result.splice(endIndex, 0, removed);
-
   return result;
-}
+};
 
 const SprintBoard = ({ sprints, projectId, orgId }: Props) => {
   const [currentSprint, setCurrentSprint] = useState<Sprint | undefined>(
@@ -57,13 +61,13 @@ const SprintBoard = ({ sprints, projectId, orgId }: Props) => {
   );
   const {
     loading: issuesLoading,
-    error: isIssueError,
     fn: fetchIssues,
     data: issues,
     setData: setIssue,
   } = useFetch({ cb: getIssuesForSprint });
-  const [filteredIssues, setFilteredIssues] = useState(issues);
-  const handleFilter = (newFilter) => {
+
+  const [filteredIssues, setFilteredIssues] = useState<Issue[]>([]);
+  const handleFilter = (newFilter: Issue[]) => {
     setFilteredIssues(newFilter);
   };
 
@@ -84,7 +88,7 @@ const SprintBoard = ({ sprints, projectId, orgId }: Props) => {
     error: updateIssuesError,
   } = useFetch({ cb: updateIssueOrder });
 
-  const onDragEnd = (result) => {
+  const onDragEnd = (result: DropResult) => {
     if (currentSprint?.status === "PLANNED") {
       toast.warning("Start the sprint to update board");
       return;
@@ -103,7 +107,7 @@ const SprintBoard = ({ sprints, projectId, orgId }: Props) => {
     ) {
       return;
     }
-    const newOrderedData = [...issues];
+    const newOrderedData = [...(issues || [])];
 
     // source and destination list
     const sourceList = newOrderedData.filter(
@@ -129,7 +133,7 @@ const SprintBoard = ({ sprints, projectId, orgId }: Props) => {
       const [movedCard] = sourceList.splice(source.index, 1);
 
       // assign the new list id to the moved card
-      movedCard.status = destination.droppableId;
+      movedCard.status = destination.droppableId as IssueStatus;
 
       // add new card to the destination list
       destinationList.splice(destination.index, 0, movedCard);
@@ -145,7 +149,7 @@ const SprintBoard = ({ sprints, projectId, orgId }: Props) => {
     }
 
     const sortedIssues = newOrderedData.sort((a, b) => a.order - b.order);
-    setIssue(newOrderedData, sortedIssues);
+    setIssue(sortedIssues);
 
     updateIssueOrderFn(sortedIssues);
   };
@@ -167,10 +171,6 @@ const SprintBoard = ({ sprints, projectId, orgId }: Props) => {
 
       {issues && !issuesLoading && (
         <BoardFilter issues={issues} onFilterChange={handleFilter} />
-      )}
-
-      {issuesLoading && (
-        <BarLoader className=" mt-4" width={"100%"} color="#36d7b7" />
       )}
 
       {updateIssuesError && (

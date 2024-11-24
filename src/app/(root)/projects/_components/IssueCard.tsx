@@ -10,9 +10,8 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { formatDistanceToNow } from "date-fns";
-import { useRouter } from "next/navigation";
 import UserAvatar from "@/components/UserAvatar";
-import { Issue } from "@prisma/client";
+import { Issue, User } from "@prisma/client";
 import IssueDetailsDialog from "./IssueDetailsDialog";
 
 const priorityColor = {
@@ -22,31 +21,19 @@ const priorityColor = {
   URGENT: "border-red-400",
 };
 
-type Props = {
-  issue: Issue;
-  showStatus?: boolean;
-  onDelete?: (...params: any) => void;
-  onUpdate?: (...params: any) => void;
+// Define the type for the issue with relations
+type IssueWithRelations = Issue & {
+  assignee?: User | null; // Assignee can be null
+  reporter?: User; // Reporter is required
 };
 
-export default function IssueCard({
-  issue,
-  showStatus = false,
-  onDelete = () => {},
-  onUpdate = () => {},
-}: Props) {
+type Props = {
+  issue: IssueWithRelations;
+  showStatus?: boolean;
+};
+
+export default function IssueCard({ issue, showStatus = false }: Props) {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const router = useRouter();
-
-  const onDeleteHandler = (...params) => {
-    router.refresh();
-    onDelete(...params);
-  };
-
-  const onUpdateHandler = (...params) => {
-    router.refresh();
-    onUpdate(...params);
-  };
 
   const created = formatDistanceToNow(new Date(issue.createdAt), {
     addSuffix: true,
@@ -82,8 +69,6 @@ export default function IssueCard({
           isOpen={isDialogOpen}
           onClose={() => setIsDialogOpen(false)}
           issue={issue}
-          onDelete={onDeleteHandler}
-          onUpdate={onUpdateHandler}
           borderCol={priorityColor[issue.priority]}
         />
       )}

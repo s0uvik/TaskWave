@@ -23,7 +23,7 @@ const OrgSwitcher = () => {
           afterCreateOrganizationUrl="/organization/:slug"
           afterSelectOrganizationUrl="/organization/:slug"
           createOrganizationMode="modal"
-          createOrganizationUrl="/onboarding"
+          createOrganizationUrl={"/onboarding" as unknown as undefined}
           appearance={{
             elements: {
               organizationSwitcherTrigger:

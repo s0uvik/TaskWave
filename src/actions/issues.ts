@@ -123,10 +123,7 @@ export const deleteIssue = async (issueId: string) => {
     throw new Error("Issue not found");
   }
 
-  if (
-    issue.reporterId !== user.id &&
-    !issue.project.adminIds.includes(user.id)
-  ) {
+  if (issue.reporterId !== user.id) {
     throw new Error("You don't have permission to delete this issue");
   }
 
