@@ -1,7 +1,7 @@
 "use client";
 
 import React, { Dispatch, useEffect, useState } from "react";
-import { Sprint } from "./SprintBoard";
+import { Sprint } from "../../../../components/SprintBoard";
 import { format, formatDistanceToNow, isAfter, isBefore } from "date-fns";
 
 import {
