@@ -1,7 +1,6 @@
 "use client";
 
 import React, { Dispatch, useEffect, useState } from "react";
-import { Sprint } from "../../../../components/SprintBoard";
 import { format, formatDistanceToNow, isAfter, isBefore } from "date-fns";
 
 import {
@@ -15,8 +14,9 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import useFetch from "@/hooks/useFetch";
 import { updateSprintStatus } from "@/actions/sprint";
-import { SprintStatus } from "@prisma/client";
+import { Sprint, SprintStatus } from "@prisma/client";
 import { BarLoader } from "react-spinners";
+import { useSearchParams } from "next/navigation";
 
 type Props = {
   sprint: Sprint | undefined;
@@ -31,6 +31,7 @@ const SprintManager = ({
   projectId,
 }: Props) => {
   const [status, setStatus] = useState(sprint?.status);
+  const searchParams = useSearchParams();
 
   const {
     loading,
@@ -55,6 +56,17 @@ const SprintManager = ({
       }
     }
   }, [data, setCurrentSprint, sprint]);
+
+  useEffect(() => {
+    const sprintId = searchParams.get("sprint");
+    if (sprintId && sprintId !== sprint?.id) {
+      const selectedSprint = sprints.find((s) => s.id === sprintId);
+      if (selectedSprint) {
+        setCurrentSprint(selectedSprint);
+        setStatus(selectedSprint.status);
+      }
+    }
+  }, [searchParams, sprints]);
 
   const startDate = sprint ? new Date(sprint.startDate) : "";
   const endDate = sprint ? new Date(sprint.endDate) : "";
