@@ -1,4 +1,6 @@
 import React, { Suspense } from "react";
+import { Issue } from "@prisma/client";
+
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import IssueCard from "@/app/(root)/projects/_components/IssueCard";
 import { getUserIssues } from "@/actions/issues";
@@ -11,7 +13,7 @@ const UserIssues = async ({ userId }: { userId: string | null }) => {
   }
 
   const assignedIssues = issues.filter(
-    (issue) => issue.assignee.clerkUserId === userId
+    (issue) => issue.assignee?.clerkUserId === userId
   );
   const reportedIssues = issues.filter(
     (issue) => issue.reporter.clerkUserId === userId
@@ -39,7 +41,7 @@ const UserIssues = async ({ userId }: { userId: string | null }) => {
   );
 };
 
-function IssueGrid({ issues }) {
+function IssueGrid({ issues }: { issues: Issue[] }) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
       {issues.map((issue) => (
