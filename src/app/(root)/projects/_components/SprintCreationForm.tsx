@@ -28,6 +28,7 @@ import { cn } from "@/lib/utils";
 import { CalendarIcon } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 type Props = {
   projectTitle: string;
@@ -45,6 +46,7 @@ const SprintCreationForm = ({
   sprintKey,
 }: Props) => {
   const [showForm, setShowForm] = useState(false);
+  const router = useRouter();
   const {
     loading,
     error,
@@ -67,16 +69,16 @@ const SprintCreationForm = ({
 
     setShowForm(false);
     toast.success("Sprint created successfully");
+    router.refresh();
   };
 
   return (
     <div className=" mb-6">
-      <div className=" flex justify-between">
-        <h1 className=" text-5xl font-semibold mb-6 gradient-title">
+      <div className=" flex justify-between items-center mb-6">
+        <h1 className=" md:text-5xl text-3xl font-semibold gradient-title">
           {projectTitle}
         </h1>
         <Button
-          className=" mt-4"
           onClick={() => setShowForm(!showForm)}
           variant={showForm ? "destructive" : "default"}
         >
@@ -89,7 +91,7 @@ const SprintCreationForm = ({
             <Form {...form}>
               <form
                 onSubmit={form.handleSubmit(onSubmit)}
-                className="space-y-8 mx-auto"
+                className="space-y-6 mx-auto"
               >
                 <FormField
                   control={form.control}
@@ -109,7 +111,7 @@ const SprintCreationForm = ({
                     </FormItem>
                   )}
                 />
-                <div className=" flex justify-between">
+                <div className=" flex flex-col md:flex-row gap-6 justify-between">
                   <FormField
                     control={form.control}
                     name="startDate"
@@ -122,7 +124,7 @@ const SprintCreationForm = ({
                               <Button
                                 variant={"outline"}
                                 className={cn(
-                                  "w-[340px] pl-3 text-left font-normal",
+                                  "md:w-[340px] pl-3 text-left font-normal",
                                   !field.value && "text-muted-foreground"
                                 )}
                               >
@@ -160,7 +162,7 @@ const SprintCreationForm = ({
                               <Button
                                 variant={"outline"}
                                 className={cn(
-                                  "w-[340px] pl-3 text-left font-normal",
+                                  "md:w-[340px] pl-3 text-left font-normal",
                                   !field.value && "text-muted-foreground"
                                 )}
                               >

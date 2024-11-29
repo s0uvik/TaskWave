@@ -109,7 +109,7 @@ export default function IssueDetailsDialog({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent>
+      <DialogContent className=" w-[90%] mx-auto rounded-lg">
         <DialogHeader>
           <div className="flex justify-between items-center">
             <DialogTitle className="text-3xl">{issue.title}</DialogTitle>

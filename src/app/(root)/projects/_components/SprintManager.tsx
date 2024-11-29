@@ -1,7 +1,9 @@
 "use client";
 
 import React, { Dispatch, useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { format, formatDistanceToNow, isAfter, isBefore } from "date-fns";
+import { BarLoader } from "react-spinners";
 
 import {
   Select,
@@ -15,8 +17,6 @@ import { Badge } from "@/components/ui/badge";
 import useFetch from "@/hooks/useFetch";
 import { updateSprintStatus } from "@/actions/sprint";
 import { Sprint, SprintStatus } from "@prisma/client";
-import { BarLoader } from "react-spinners";
-import { useSearchParams } from "next/navigation";
 
 type Props = {
   sprint: Sprint | undefined;
@@ -98,7 +98,7 @@ const SprintManager = ({
   };
   return (
     <>
-      <div className=" flex justify-between items-center gap-4">
+      <div className=" flex-col md:flex-row flex justify-between md:items-center gap-4">
         <Select value={sprint?.id} onValueChange={handleSprintChange}>
           <SelectTrigger className=" bg-slate-900 self-start">
             <SelectValue placeholder="Select Sprint" />

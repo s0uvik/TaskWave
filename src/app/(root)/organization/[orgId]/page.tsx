@@ -19,7 +19,7 @@ const page = async ({ params }: { params: Promise<{ orgId: string }> }) => {
 
   return (
     <div className=" container mx-auto">
-      <section className=" flex mb-4 fex-col sm:flex-row justify-between items-start">
+      <section className="mb-4 flex flex-col md:flex-row md:items-center md:justify-between gap-2">
         <h1 className=" text-3xl sm:text-4xl font-semibold pb-2 gradient-title ">
           {organization.name}&apos;s Projects
         </h1>

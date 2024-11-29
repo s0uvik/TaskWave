@@ -28,16 +28,18 @@ const ProjectList = async ({ orgId }: Props) => {
   return (
     <div className=" grid gap-8 grid-cols-1 md:grid-cols-2">
       {projects.map((project) => (
-        <Card key={project.id}>
-          <CardHeader className=" flex flex-row justify-between items-center -mt-3">
+        <Card key={project.id} className=" flex flex-col justify-between">
+          <CardHeader className="flex flex-row justify-between items-center -mt-3">
             <CardTitle>{project.name}</CardTitle>
             <DeleteProject projectId={project.id} />
           </CardHeader>
-          <CardContent>
-            <p className=" text-gray-500 mb-4">{project.description}</p>
+          <CardContent className=" -mt-3">
+            <p className="text-gray-500 mb-4 text-xs md:text-sm line-clamp-3">
+              {project.description}
+            </p>
             <Link
               href={`/projects/${project.id}`}
-              className="underline underline-offset-2 text-blue-300"
+              className="text-blue-300 mt-auto"
             >
               View Project
             </Link>
