@@ -72,8 +72,7 @@ const SprintManager = ({
   const endDate = sprint ? new Date(sprint.endDate) : "";
   const now = new Date();
 
-  const canStart =
-    isBefore(now, endDate) && isAfter(now, startDate) && status === "PLANNED";
+  const canStart = status === "PLANNED";
   const canEnd = status === "ACTIVE";
 
   const handleSprintChange = (value: unknown) => {
